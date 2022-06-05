@@ -20,7 +20,7 @@ router.put(
         });
       })
       .normalizeEmail(),
-    body("password").thim().isLength({ min: 5 }),
+    body("password").trim().isLength({ min: 5 }),
     body("name").trim().not().isEmpty(),
   ],
   authController.signup
