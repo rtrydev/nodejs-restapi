@@ -5,9 +5,25 @@ const path = require("path");
 const { clear } = require("console");
 
 exports.getPosts = (req, res, next) => {
+  const currentPage = req.query.page || 1;
+  const perPage = 2;
+  let totalItems;
   Post.find()
+    .countDocuments()
     .then((result) => {
-      res.status(200).json({ message: "Fetched successfully", posts: result });
+      totalItems = result;
+      return Post.find()
+        .skip((currentPage - 1) * perPage)
+        .limit(perPage);
+    })
+    .then((posts) => {
+      res
+        .status(200)
+        .json({
+          message: "Fetched successfully",
+          posts: posts,
+          totalItems: totalItems,
+        });
     })
     .catch((err) => {
       if (!err.statusCode) {
