@@ -105,7 +105,7 @@ exports.updatePost = (req, res, next) => {
         clearImage(post.imageUrl);
       }
       post.title = title;
-      post.imageUrl = imageUrl;
+      post.imageUrl = imageUrl.replaceAll("\\", "/");
       post.content = content;
       return post.save();
     })
